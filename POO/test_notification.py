@@ -31,14 +31,4 @@ for x in range(3):
     if isinstance(notification, NotificationSMS):
         print(notification + 'Jhonatan')
 
-    print()
-
-
-# sms = NotificationSMS('I called you earlier, please call me back')
-# email = NotificationMail('I sent a message to you, please check your fucking smartphone')
-
-# notify(sms)
-# notify(email)
-
-# check_type(sms)
-# check_type(email)
+    print('')
