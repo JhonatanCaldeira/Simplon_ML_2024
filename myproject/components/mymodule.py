@@ -20,4 +20,4 @@ def my_concatenate(**kwargs):
     # Iterating over the Python kwargs dictionary
     for arg in kwargs.values():
         result += arg + ' '
-    return result
+    return result.strip()
