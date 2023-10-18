@@ -13,9 +13,8 @@ DATA_FILE_OUT = os.path.join(DATA_DIR, 'titanic_out.csv')
 Load Titanic data into a pandas dataframe.
 Return a pandas dataframe
 """
-def data_load():
-    print(DATA_FILE_IN)
-    df = pd.read_csv(DATA_FILE_IN)
+def data_load(file):
+    df = pd.read_csv(file)
 
     return df
 
@@ -46,7 +45,7 @@ def data_write_to_csv(df: pd.DataFrame):
     df.to_csv(DATA_FILE_OUT, index=False)
 
 if __name__ == '__main__':
-    df_titanic = data_load()
+    df_titanic = data_load(DATA_FILE_IN)
     df_titanic = data_clean_up(df_titanic)
     data_show(df_titanic)
     data_write_to_csv(df_titanic)
