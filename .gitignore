@@ -163,3 +163,4 @@ cython_debug/
 .csv
 files/
 ML/
+data/
