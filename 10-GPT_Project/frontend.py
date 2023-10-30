@@ -16,6 +16,9 @@ if 'history' not in st.session_state:
 if 'code_id' not in st.session_state:
     st.session_state.code_id = ''
 
+if 'language' not in st.session_state:
+    st.session_state.language = 'python'
+
 session_id = st.session_state.get("session_id", None)
 if not session_id:
     session_id = str(uuid.uuid4())
@@ -57,13 +60,16 @@ def exec_generer():
     st.session_state.code_id = openai_return[0]
     st.session_state.code_editor = openai_return[1]
 
-def load_history(texte, code):
+def load_history(code_id='', texte='', code='', language=''):
+    st.write(code_id, texte, code, language)
+    st.session_state.code_id = code_id
     st.session_state.textarea = texte
     st.session_state.code_editor = code
+    st.session_state.language = language
 
 # QUESTION AREA
 st.title("Transcompilateur")
-texte = st.text_area("Entrez la description du programme:")
+texte = st.text_input("Entrez la description du programme:", value=st.session_state.textarea)
 
 list_langage = requests.get("http://localhost:5000/api/getLangage")
 langage = st.selectbox("Choisissez un langage de programmation:", 
@@ -90,18 +96,30 @@ if response_dict['type'] == "submit" and len(response_dict['id']) != 0:
 
 # SIDEBAR
 st.sidebar.subheader("Historique des requêtes")
-history_response = requests.get("http://localhost:5000/api/getHistory", json={"session_id": session_id, "texte": texte, "langage": langage})
+history_response = requests.get("http://localhost:5000/api/getHistoryList", json={"session_id": session_id, "texte": texte, "langage": langage})
 
-button_id = 0
-for item in history_response.json():
-    button_id += 1
-    button_key = 'button_' + str(button_id)
-
-    st.session_state.history[button_key] = {
-        'prompt': item[0],
-        'result': item[1]
+buttonstyle = '''
+<style>
+    div[data-testid="stSidebarUserContent"] .stButton > button {
+        width: calc(100%);
+        text-align: start;
+        display: block;
+        float:left;
     }
+    div[data-testid="stSidebarUserContent"] .stButton > button p {
+        font-size: 0.8rem;
+    }
+</style>
+'''
+st.markdown(buttonstyle, unsafe_allow_html=True)
 
-    st.sidebar.button(item[0][0:30], on_click=load_history(st.session_state.history[button_key]['prompt'], 
-                                                           st.session_state.history[button_key]['result']), key=button_key)
+if st.sidebar.button('Nouvelle'):
+    load_history()
+
+for i, item in enumerate(history_response.json()):
+    if st.sidebar.button(item[1][0:30], key=i):
+        history_response = requests.get("http://localhost:5000/api/getHistoryByCode",  params={"code_id": item[0]}).json()
+        code_id, texte, code, language = history_response[0]
+        load_history(code_id, texte, code, language)
+
 # st.sidebar.radio(label='Historique des requêtes', options=[item[0][:30]for item in history_response.json()])

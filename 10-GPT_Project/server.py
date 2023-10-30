@@ -18,14 +18,12 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+
 # Méthode responsable pour crée la connexion avec le database
-def create_connection():
-    engine = create_engine(f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_HOST}/{DATABASE_NAME}")
-    return engine
+engine = create_engine(f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_HOST}/{DATABASE_NAME}")
 
 # Méthode responsable pour enregistrer une requête dans le database
 def save_history(language, question, code):
-    engine = create_connection()
     Session = sessionmaker(bind=engine)
     
     with Session() as session:
@@ -38,19 +36,16 @@ def save_history(language, question, code):
 
 
 def update_history(code_id, code):
-    engine = create_connection()
     Session = sessionmaker(bind=engine)
     
     with Session.begin() as session:
         update_code = session.query(TexteCode).filter_by(id=code_id).first()
-        print('ID:', code_id)
-        print('CODE', code)
+
         if update_code:
             update_code.code = code
             session.add(update_code)
 
     return True
-
 
 # Méthode responsable pour executer les commandes python écrites par les utilisateurs
 def execute_python(code_id, code):
@@ -60,11 +55,10 @@ def execute_python(code_id, code):
         sys.stdout = new_stdout
         exec(code)
         output = new_stdout.getvalue()
-
-        update_history(code_id, code)
     except Exception as e:
         output = f"Erreur lors de l'exécution: {str(e)}"
     finally:
+        update_history(code_id, code)
         sys.stdout = old_stdout
 
     return json.dumps(output)
@@ -80,8 +74,6 @@ def execute_js(code):
 # Route responsable pour lister toutes les langages qui ont été stocké dans le database
 @app.route("/api/getLangage")
 def get_all_language():
-    engine = create_connection()
-
     with sessionmaker(bind=engine).begin() as session:
         result_query = session.query(Langage.langage).all()
         langage_json = json.dumps(','.join([lan.langage for lan in result_query]))
@@ -89,13 +81,36 @@ def get_all_language():
     return langage_json
 
 # Route responsable pour lister tout l'historique stocké dans la base de données
-@app.route("/api/getHistory")
-def get_history():
-    engine = create_connection()
+@app.route("/api/getHistoryList")
+def get_history_list():
     with sessionmaker(bind=engine).begin() as session:
-        lst_obj_texte = session.query(TexteCode.texte,TexteCode.code).order_by(TexteCode.id).all()
-        texte_json = json.dumps([(texte.texte, texte.code) for texte in lst_obj_texte])
+        lst_obj_texte = session.query(
+            TexteCode.id,
+            TexteCode.texte
+            ).order_by(TexteCode.id.desc()).all()
+
+        texte_json = json.dumps(
+            [(texte.id, texte.texte) for texte in lst_obj_texte])
     
+    return texte_json
+
+@app.route("/api/getHistoryByCode")
+def get_history_by_code():
+    code_id = request.args.get("code_id")
+    with sessionmaker(bind=engine).begin() as session:
+        lst_obj_texte = session.query(
+            TexteCode.id,
+            TexteCode.texte,
+            TexteCode.code,
+            Langage.langage).join(
+                TexteCode, TexteCode.id_langage == Langage.id_langage
+            ).filter_by(id=code_id).order_by(TexteCode.id.desc()).all()
+
+        texte_json = json.dumps(
+            [(texte.id, texte.texte, 
+            texte.code, texte.langage) for texte in lst_obj_texte])
+        
+    print('HISTORY',texte_json)
     return texte_json
 
 # Route responsable pour envoyer la question demandé par l'utilisateur à OPEN AI.
@@ -106,14 +121,11 @@ def openai_request():
     language = request.args.get("language")
     question = request.args.get("question")
 
-    # language = 'python'
-    # question = 'criar um script que receba dois números, some o quadrado de cada um e reenvie a soma ao quadrado'
-
     assistant_type = f"{language} developper"
     completion = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
     messages=[
-        {"role": "system", "content": "You are a " + assistant_type + " assistant, skilled in providing the optimal solution"},
+        {"role": "system", "content": " I want you to act as a senior " + assistant_type + " You only answer with fenced code block without further explanations."},
         {"role": "user", "content": question}
     ]
     )
@@ -143,9 +155,9 @@ def execute_code():
 
 if __name__ == '__main__':
     # print(json.loads(openai_request()))
-    for i in json.loads(openai_request()):
-        print('ID', i[0])
-        print('CODE', i[1])
+    # for i in json.loads(openai_request()):
+    #     print('ID', i[0])
+    #     print('CODE', i[1])
     # print(get_language())
     # save_history()
     # for i in json.loads(get_history()):
