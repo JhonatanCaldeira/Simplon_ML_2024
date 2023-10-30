@@ -14,7 +14,7 @@ from sqlalchemy_utils import database_exists, drop_database, create_database
 from models.model import Base, Langage, TexteCode
 
 from config.config import DATABASE_HOST, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_USERNAME, OPENAI_API_KEY
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -65,11 +65,14 @@ def execute_python(code_id, code):
 
 # Méthode responsable pour executer les commandes javascript écrites par les utilisateurs
 def execute_js(code):
-    # Use js2py to execute the JavaScript code
-    context = js2py.EvalJs()
-    result = context.execute(code)
+    try:
+        context = js2py.EvalJs()
+        context.execute(code)
+        result = str(context.result)
+    except Exception as e:
+        result = f"Erreur lors de l'exécution: {str(e)}"
 
-    return json.dumps(context.result)
+    return jsonify({"output": result})
 
 # Route responsable pour lister toutes les langages qui ont été stocké dans le database
 @app.route("/api/getLangage")
@@ -149,9 +152,9 @@ def execute_code():
     if language == 'python':
         return execute_python(code_id, code)
     elif language == 'javascript':
-        return json.dumps('Under construction :-)')
+        return execute_js(code)
     else:
-        return json.dumps('Unknown Language')
+        return jsonify({"output": "Langage non pris en charge."})
 
 if __name__ == '__main__':
     # print(json.loads(openai_request()))
@@ -162,4 +165,4 @@ if __name__ == '__main__':
     # save_history()
     # for i in json.loads(get_history()):
     #     print('teste', i[0])
-    # save_history('python', 'test', 'test')
+    save_history('python', 'test', 'test')

@@ -60,12 +60,20 @@ def exec_generer():
     st.session_state.code_id = openai_return[0]
     st.session_state.code_editor = openai_return[1]
 
-def load_history(code_id='', texte='', code='', language=''):
-    st.write(code_id, texte, code, language)
+def load_history(code_id=''):
+    history_response = requests.get("http://localhost:5000/api/getHistoryByCode",  params={"code_id": code_id}).json()
+    code_id, texte, code, language = history_response[0]
+
     st.session_state.code_id = code_id
     st.session_state.textarea = texte
     st.session_state.code_editor = code
     st.session_state.language = language
+
+def reset_form():
+    st.session_state.code_id = ''
+    st.session_state.textarea = ''
+    st.session_state.code_editor = ''
+    st.session_state.language = ''
 
 # QUESTION AREA
 st.title("Transcompilateur")
@@ -113,13 +121,7 @@ buttonstyle = '''
 '''
 st.markdown(buttonstyle, unsafe_allow_html=True)
 
-if st.sidebar.button('Nouvelle'):
-    load_history()
+st.sidebar.button('Nouvelle', on_click=reset_form)
 
 for i, item in enumerate(history_response.json()):
-    if st.sidebar.button(item[1][0:30], key=i):
-        history_response = requests.get("http://localhost:5000/api/getHistoryByCode",  params={"code_id": item[0]}).json()
-        code_id, texte, code, language = history_response[0]
-        load_history(code_id, texte, code, language)
-
-# st.sidebar.radio(label='Historique des requêtes', options=[item[0][:30]for item in history_response.json()])
+    st.sidebar.button(item[1][0:30], key=i, on_click=load_history, args=(item[0],))
