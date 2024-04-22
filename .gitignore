@@ -166,3 +166,7 @@ ML/
 data/
 config/
 dataset/
+
+#Docker
+.dockerignore
+Dockerfile
