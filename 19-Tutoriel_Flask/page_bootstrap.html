@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exemples d'utilisation de Bootstrap</title>
+  <!-- Link vers Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Bootstrap Examples</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Accueil <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#buttons">Boutons</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#alerts">Alertes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#cards">Cards</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#forms">Formulaires</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1>Exemples d'utilisation de Bootstrap</h1>
+
+    <!-- Boutons -->
+    <h2 id="buttons" class="mt-4">Boutons</h2>
+    <div class="row">
+      <div class="col-md-3 mb-2">
+        <button class="btn btn-primary btn-block">Bouton primaire</button>
+      </div>
+      <div class="col-md-3 mb-2">
+        <button class="btn btn-secondary btn-block">Bouton secondaire</button>
+      </div>
+      <div class="col-md-3 mb-2">
+        <button class="btn btn-success btn-block">Bouton succès</button>
+      </div>
+      <div class="col-md-3 mb-2">
+        <button class="btn btn-danger btn-block">Bouton danger</button>
+      </div>
+      <div class="col-md-3 mb-2">
+        <button class="btn btn-warning btn-block">Bouton avertissement</button>
+      </div>
+      <div class="col-md-3 mb-2">
+        <button class="btn btn-info btn-block">Bouton info</button>
+      </div>
+      <div class="col-md-3 mb-2">
+        <button class="btn btn-light btn-block">Bouton clair</button>
+      </div>
+      <div class="col-md-3 mb-2">
+        <button class="btn btn-dark btn-block">Bouton sombre</button>
+      </div>
+    </div>
+
+    <!-- Alertes -->
+    <h2 id="alerts" class="mt-4">Alertes</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="alert alert-primary" role="alert">Alerte primaire</div>
+      </div>
+      <div class="col-md-6">
+        <div class="alert alert-secondary" role="alert">Alerte secondaire</div>
+      </div>
+      <div class="col-md-6">
+        <div class="alert alert-success" role="alert">Alerte succès</div>
+      </div>
+      <div class="col-md-6">
+        <div class="alert alert-danger" role="alert">Alerte danger</div>
+      </div>
+      <div class="col-md-6">
+        <div class="alert alert-warning" role="alert">Alerte avertissement</div>
+      </div>
+      <div class="col-md-6">
+        <div class="alert alert-info" role="alert">Alerte info</div>
+      </div>
+      <div class="col-md-6">
+        <div class="alert alert-light" role="alert">Alerte clair</div>
+      </div>
+      <div class="col-md-6">
+        <div class="alert alert-dark" role="alert">Alerte sombre</div>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <h2 id="cards" class="mt-4">Cards</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Card primaire</h5>
+            <p class="card-text">Contenu de la carte.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card bg-success text-white">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Card succès</h5>
+            <p class="card-text">Contenu de la carte.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card bg-warning text-white">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Card avertissement</h5>
+            <p class="card-text">Contenu de la carte.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulaires -->
+    <h2 id="forms" class="mt-4">Formulaires</h2>
+    <form>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="exampleFormControlInput1">Adresse e-mail</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="exampleFormControlSelect1">Sélection</label>
+          <select class="form-control" id="exampleFormControlSelect1">
+            <option>Option 1</option>
+            <option>Option 2</option>
+            <option>Option 3</option>
+            <option>Option 4</option>
+            <option>Option 5</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="exampleFormControlTextarea1">Exemple de zone de texte</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="exampleFormControlSelect2">Choisissez plusieurs options</label>
+          <select multiple class="form-control" id="exampleFormControlSelect2">
+            <option>Option 1</option>
+            <option>Option 2</option>
+            <option>Option 3</option>
+            <option>Option 4</option>
+            <option>Option 5</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Envoyer</button>
+    </form>
+  </div>
+
+  <footer class="mt-5 py-4 bg-dark text-white text-center">
+    <div class="container">
+      <p>&copy; 2024 Bootstrap Examples</p>
+    </div>
+  </footer>
+
+  <!-- Link vers Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
