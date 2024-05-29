@@ -1,0 +1,40 @@
+{% extends "auth/base.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block style %}
+<style>
+    .form-container {
+        margin: auto;
+        width: 30rem;
+        margin-top: 50px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <form>
+        <div class="mb-3">
+            <label for="inputEmail" class="form-label">Email address</label>
+            <input type="email" class="form-control" name="inputEmail" id="inputEmail" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label for="inputPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" name="inputPassword" id="inputPassword">
+        </div>
+        <button type="submit" class="btn btn-primary" formmethod="post">Submit</button>
+    </form>
+</div>
+
+
+{% endblock %}
+{% block content_left %}
+
+{% endblock %}
+
+{% block content_right %}
+
+{% endblock %}
