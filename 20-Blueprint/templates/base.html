@@ -7,9 +7,17 @@
     {% block style %} 
     {% endblock %}
 </head>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 <body>
     <header>
-        <!-- <h1>BIENVENU!</h1> -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
               <a class="navbar-brand" href="#">Navbar</a>
@@ -23,10 +31,18 @@
                       Menu
                     </button>
                     <ul class="dropdown-menu dropdown-menu-dark">
-                      <li><a class="dropdown-item" href="/">Accueil</a></li>
-                      <li><a class="dropdown-item" href="/login">Login</a></li>
-                      <li><a class="dropdown-item" href="/register">S'enregistrer</a></li>
+                      <li><a class="dropdown-item" href="/index">Main</a></li>
                       <li><a class="dropdown-item" href="/about">About</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      Account
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                      <li><a class="dropdown-item" href="/login">Login</a></li>
+                      <li><a class="dropdown-item" href="/register">New</a></li>
+                      <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -35,23 +51,9 @@
           </nav>
     </header>
     <!-- <hr> -->
-    {% block content %}
-    {% endblock %}
     <main class="container mt-4">
-        <div class="row">
-            <div class="col-md-6">
-                {% block content_left %}
-                <h2>Left Column</h2>
-                <p>This is the left column content.</p>
-                {% endblock %}
-            </div>
-            <div class="col-md-6">
-                {% block content_right %}
-                <h2>Right Column</h2>
-                <p>This is the right column content.</p>
-                {% endblock %}
-            </div>
-        </div>
+      {% block content %}
+      {% endblock %}
     </main>
     
     <footer class="monfooter">

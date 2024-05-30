@@ -1,4 +1,4 @@
-{% extends "auth/base.html" %}
+{% extends "base.html" %}
 
 {% block title %} Login {% endblock %}
 
@@ -25,6 +25,12 @@
             <label for="inputPassword" class="form-label">Password</label>
             <input type="password" class="form-control" name="inputPassword" id="inputPassword">
         </div>
+        <div class="mb-3">
+            <a href="forgot_password">Forgot Password</a>
+        </div>
+        {% if error %}
+        <strong>Error:</strong> {{ error }}
+        {% endif %}
         <button type="submit" class="btn btn-primary" formmethod="post">Submit</button>
     </form>
 </div>
